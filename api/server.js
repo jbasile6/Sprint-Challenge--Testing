@@ -10,7 +10,6 @@ server.get('/', (req, res) => {
     res.status(200).json({ api: 'up and running!'})
 });
 
-module.exports = server;
 
 server.post('/games', (req, res) => {
     db('games')
@@ -19,5 +18,12 @@ server.post('/games', (req, res) => {
             res.status(201).json({ message: 'New Game added to Database' })
         })
         .catch(err => res.status(422).json(err))
-
 })
+
+server.get('/games', (req,res) => {
+    db('games')
+        .then(games => res.status(200).json(games))
+        .catch(err => res.status(500).json(err));
+})
+
+module.exports = server;

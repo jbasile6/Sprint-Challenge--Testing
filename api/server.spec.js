@@ -1,6 +1,12 @@
 const request = require('supertest');
 const server = require('./server');
 
+const db = require('../data/dbConfig');
+
+beforeEach(async () => {
+  await db('games').truncate();
+})
+
 describe('server.js', () => {
     describe('GET /', () => {
       it('should respond with 200 OK', () => {
@@ -70,6 +76,19 @@ describe('server.js', () => {
             .then(res => {
                 expect(res.text).toEqual("{\"message\":\"New Game added to Database\"}")
             })
+    })
+  })
+
+  describe('GET /games', () => {
+    //Write a test to make sure this endpoint always returns an array,
+    // even if there are no games stored. If there are no games to return,
+    // the endpoint should return an empty array.
+    it('always returns an array', () => {
+      return request(server)
+        .get('/games')
+          .then( res => {
+            expect(res.text).toEqual('[]')
+          })
     })
   })
 
