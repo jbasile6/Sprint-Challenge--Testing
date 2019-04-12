@@ -74,7 +74,7 @@ describe('server.js', () => {
             .post('/games')
             .send({title: 'test1', genre: 'test1', releaseYear: 2000})
             .then(res => {
-                expect(res.text).toEqual("{\"message\":\"New Game added to Database\"}")
+                expect(res.body).toEqual({ message: 'New Game added to Database' })
             })
     })
   })
@@ -90,6 +90,22 @@ describe('server.js', () => {
             expect(res.text).toEqual('[]')
           })
     })
+
+    it('returns correct status on GET', () => {
+      return request(server)
+        .get('/games')
+          .then(res => {
+            expect(res.status).toEqual(200);
+        })
+    })
+
+    it('should return JSON', () => {
+      return request(server)
+        .get('/')
+        .then(res => {
+          expect(res.type).toBe('application/json');
+        });
+    });
   })
 
 });
